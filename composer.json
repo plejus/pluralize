@@ -1,6 +1,6 @@
 {
     "name": "plejus/pluralize",
-    "version": "1.0.0",
+    "version": "0.0.2",
     "keywords": ["singularize", "pluralize", "singular", "plurar", "inflector"],
     "time": "2019-08-07",
     "description": "Pluralize and Singularize any English word. You can also check if word is in plural or singular form.",
@@ -13,7 +13,7 @@
             "homepage": "https://github.com/plejus"
         }
     ],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.6.0"
     },
