@@ -20,11 +20,19 @@ class RuleAplicator
     /**
      * RuleAplicator constructor.
      *
-     * @param array $uncountables
+     * @param array $uncountables Array of words that should stay unchanged
      */
     public function __construct($uncountables = [])
     {
         $this->uncountables = $uncountables;
+    }
+
+    /**
+     * @param string $word
+     */
+    public function addUncountableWord($word)
+    {
+        $this->uncountables[] = $word;
     }
 
     /**
@@ -171,13 +179,5 @@ class RuleAplicator
         }
 
         return $word;
-    }
-
-    /**
-     * @param string $word
-     */
-    public function addUncountableWord($word)
-    {
-        $this->uncountables[] = $word;
     }
 }

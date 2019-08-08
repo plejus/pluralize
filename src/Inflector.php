@@ -161,8 +161,8 @@ class Inflector
      */
     public function addIrregularRule($single, $plural)
     {
-        $this->irregularSingles[] = strtolower($single);
-        $this->irregularPlurals[] = strtolower($plural);
+        $this->irregularSingles[$single] = strtolower($plural);
+        $this->irregularPlurals[$plural] = strtolower($single);
     }
 
     /**

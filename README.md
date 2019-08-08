@@ -29,6 +29,16 @@ $output = $inflector->isPlural("dogs");
 
 $output = $inflector->isSingular("dogs");
 // output: false
+
+$inflector->addIrregularRule('something', 'some things');
+$output = $inflector->plural("something");
+// output: "some things"
+
+
+$inflector->addSingularRule('/singles$/i', 'singular');
+$output = $inflector->singular("singles");
+// output: "singular
+
 ```
 
 ## Real Life Examples
@@ -47,9 +57,11 @@ $tags      = [
     103 => "monkeys",
     104 => "cats",
     105 => "cat",
+    106 => "doggies",
 ];
 
 $inflector = new Inflector();
+$inflector->addSingularRule('/doggies$/i', 'dog');
 
 $groups = [];
 
@@ -74,6 +86,7 @@ foreach ($tags as $id => $tag) {
             (
                 [0] => 100
                 [1] => 102
+                [2] => 106
             )
     
         [parrot] => Array
