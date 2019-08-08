@@ -1,6 +1,8 @@
 # PHP Pluralize / Singularize Package
 Pluralize and Singularize any English word. You can also check if word is in plural or singular form.
 
+Equivalent of **blakeembrey/pluralize** JavaScript package.
+
 ## Installation
 
 ```bash
@@ -16,7 +18,7 @@ use plejus\PhpPluralize\Inflector;
 
 $inflector = new Inflector();
 
-$output = $inflector->pluralize("dog");
+$output = $inflector->plural("dog");
 // output: "dogs"
 
 $output = $inflector->singular("dogs");

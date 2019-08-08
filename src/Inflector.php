@@ -22,8 +22,8 @@ class Inflector
 
     public function __construct()
     {
-        $this->pluralRules[]   = PluralizationRule::getAll();
-        $this->singularRules[] = SingularizationRule::getAll();
+        $this->pluralRules     = PluralizationRule::getAll();
+        $this->singularRules   = SingularizationRule::getAll();
 
         foreach (IrregularPlurals::getAll() as $rule) {
             $this->irregularSingles[$rule[0]] = $rule[1];
@@ -40,24 +40,48 @@ class Inflector
         }
     }
 
-    public function pluralize($text, $occurences = 2)
+    public function plural($text)
     {
-        return $text;
-    }
+        $callback = $this->replaceWord(
+            $this->irregularSingles,
+            $this->irregularPlurals,
+            $this->pluralRules
+        );
 
-    public function singular($text)
-    {
-        return $text;
-    }
-
-    public function isSingular($text)
-    {
-        return false;
+        return $callback($text);
     }
 
     public function isPlural($text)
     {
-        return false;
+        $callback = $this->checkWord(
+            $this->irregularSingles,
+            $this->irregularPlurals,
+            $this->pluralRules
+        );
+
+        return $callback($text);
+    }
+
+    public function singular($text)
+    {
+        $callback = $this->replaceWord(
+            $this->irregularPlurals,
+            $this->irregularSingles,
+            $this->singularRules
+        );
+
+        return $callback($text);
+    }
+
+    public function isSingular($text)
+    {
+        $callback = $this->checkWord(
+            $this->irregularPlurals,
+            $this->irregularSingles,
+            $this->singularRules
+        );
+
+        return $callback($text);
     }
 
     /**
@@ -91,9 +115,118 @@ class Inflector
         // Lower cased words. E.g. "test".
         return strtolower($token);
     }
-    
+
+    /**
+     * @param string $str
+     * @param array  $args
+     *
+     * @return string
+     */
     private function interpolate($str, $args)
     {
-        return preg_replace('/\$(\d{1,2})/g', $args, $str);
+        return preg_replace_callback('/\$(\d{1,2})/', function ($matches) use ($args) {
+            return isset($matches[1], $args[$matches[1]])
+                ? $args[$matches[1]]
+                : "";
+        }, $str);
+    }
+
+    /**
+     * @param string $word
+     * @param array  $rule
+     *
+     * @return string
+     */
+    private function replace($word, $rule)
+    {
+        return preg_replace_callback($rule[0], function ($matches) use ($word, $rule) {
+            if (!isset($matches[0])) {
+                return $word;
+            }
+
+            $result = $this->interpolate($rule[1], $matches);
+            
+            if ($matches[0] === '' && isset($matches[1])) {
+                $sub = substr($word, $matches[1] - 1);
+                return $this->restoreCase($sub, $result);
+            }
+
+            return $this->restoreCase($matches[0], $result);
+        }, $word);
+    }
+
+    /**
+     * @param string $token
+     * @param string $word
+     * @param array  $rules
+     *
+     * @return string
+     */
+    private function sanitizeWord($token, $word, $rules)
+    {
+        if (empty($token) || array_key_exists($token, $this->uncountables)) {
+            return $word;
+        }
+
+        $len = count($rules);
+
+        while ($len--) {
+            $rule = $rules[$len];
+
+            if (preg_match($rule[0], $word)) {
+                return $this->replace($word, $rule);
+            }
+        }
+
+        return $word;
+    }
+
+    /**
+     * @param array $replaceMap
+     * @param array $keepMap
+     * @param array $rules
+     *
+     * @return \Closure
+     */
+    private function replaceWord($replaceMap, $keepMap, $rules)
+    {
+        return function ($word) use ($replaceMap, $keepMap, $rules) {
+            $token = strtolower($word);
+
+            if (array_key_exists($token, $keepMap)) {
+                return $this->restoreCase($word, $token);
+            }
+
+            if (array_key_exists($token, $replaceMap)) {
+                return $this->restoreCase($word, $replaceMap[$token]);
+            }
+
+            return $this->sanitizeWord($token, $word, $rules);
+        };
+    }
+
+    /**
+     * Check if a word is part of the map.
+     * @param array $replaceMap
+     * @param array $keepMap
+     * @param array $rules
+     *
+     * @return \Closure
+     */
+    private function checkWord($replaceMap, $keepMap, $rules)
+    {
+        return function ($word) use ($replaceMap, $keepMap, $rules) {
+            $token = strtolower($word);
+
+            if (array_key_exists($token, $keepMap)) {
+                return true;
+            }
+
+            if (array_key_exists($token, $replaceMap)) {
+                return false;
+            }
+
+            return $this->sanitizeWord($token, $word, $rules) === $token;
+        };
     }
 }

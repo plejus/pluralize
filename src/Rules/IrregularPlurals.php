@@ -71,7 +71,8 @@ class IrregularPlurals
             ['thief', 'thieves'],
             ['groove', 'grooves'],
             ['pickaxe', 'pickaxes'],
-            ['passerby', 'passersby']
+            ['passerby', 'passersby'],
+            ['cookie', 'cookies'],
         ];
     }
 }
