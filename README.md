@@ -1,7 +1,7 @@
 # PHP Pluralize / Singularize Package
 Pluralize and Singularize any English word. You can also check if word is in plural or singular form.
 
-Equivalent of **blakeembrey/pluralize** JavaScript package.
+Module contains list of irregular and uncountable rules. You can also add your custom rules.
 
 ## Installation
 
@@ -29,6 +29,91 @@ $output = $inflector->isPlural("dogs");
 
 $output = $inflector->isSingular("dogs");
 // output: false
+```
+
+## Real Life Examples
+
+#### Group some animal forum tags to help user find content
+
+```php
+<?php
+
+use plejus\PhpPluralize\Inflector;
+
+$tags      = [
+    100 => "dog",
+    101 => "parrot",
+    102 => "dogs",
+    103 => "monkeys",
+    104 => "cats",
+    105 => "cat",
+];
+
+$inflector = new Inflector();
+
+$groups = [];
+
+foreach ($tags as $id => $tag) {
+    $correctTag = $inflector->isSingular($tag)
+        ? $tag
+        : $inflector->singular($tag);
+
+    if (!array_key_exists($correctTag, $groups)) {
+        $groups[$correctTag] = [];
+    }
+
+    $groups[$correctTag][] = $id;
+}
+
+/*
+ * Output:
+ * 
+ * Array
+    (
+        [dog] => Array
+            (
+                [0] => 100
+                [1] => 102
+            )
+    
+        [parrot] => Array
+            (
+                [0] => 101
+            )
+    
+        [monkey] => Array
+            (
+                [0] => 103
+            )
+    
+        [cat] => Array
+            (
+                [0] => 104
+                [1] => 105
+            )
+    )
+ */
+```
+
+#### Display correct form of word
+
+```php
+<?php
+
+use plejus\PhpPluralize\Inflector;
+
+$inflector = new Inflector();
+
+for ($i = 1; $i <= 3; $i++) {
+    echo "I have $i " . $inflector->pluralize("apple", $i);
+}
+
+/*
+*  Output:
+*  "I have 1 apple"
+*  "I have 2 apples"
+*  "I have 3 apples"
+*/
 ```
 
 ## License

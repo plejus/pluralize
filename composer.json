@@ -1,9 +1,9 @@
 {
     "name": "plejus/pluralize",
     "version": "1.0.0",
-    "keywords": ["singularize", "pluralize", "singular", "plurar", "inflector", "inflection", "words"],
+    "keywords": ["singularize", "pluralize", "singular", "plural", "inflector", "inflection", "words"],
     "time": "2019-08-07",
-    "description": "Pluralize and Singularize any English word. You can also check if word is in plural or singular form.",
+    "description": "Pluralize any English word. You can also check if word is in plural or singular form.",
     "type": "library",
     "license": "MIT",
     "authors": [
