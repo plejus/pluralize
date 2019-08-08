@@ -12,7 +12,6 @@ class UncountableRule
     public static function getAll()
     {
         return   [
-                // Singular words with no plurals.
                 'adulthood',
                 'advice',
                 'agenda',

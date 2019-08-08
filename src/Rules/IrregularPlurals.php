@@ -20,7 +20,6 @@ class IrregularPlurals
     public static function getAll()
     {
         return [
-            // Pronouns.
             ['I', 'we'],
             ['me', 'us'],
             ['he', 'they'],
@@ -37,23 +36,23 @@ class IrregularPlurals
             ['has', 'have'],
             ['this', 'these'],
             ['that', 'those'],
-            // Words ending in with a consonant and `o`.
+
             ['echo', 'echoes'],
             ['dingo', 'dingoes'],
             ['volcano', 'volcanoes'],
             ['tornado', 'tornadoes'],
             ['torpedo', 'torpedoes'],
-            // Ends with `us`.
+
             ['genus', 'genera'],
             ['viscus', 'viscera'],
-            // Ends with `ma`.
+
             ['stigma', 'stigmata'],
             ['stoma', 'stomata'],
             ['dogma', 'dogmata'],
             ['lemma', 'lemmata'],
             ['schema', 'schemata'],
             ['anathema', 'anathemata'],
-            // Other irregular rules.
+
             ['ox', 'oxen'],
             ['axe', 'axes'],
             ['die', 'dice'],
