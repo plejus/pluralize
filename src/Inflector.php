@@ -92,13 +92,7 @@ class Inflector
      */
     public function isPlural($text)
     {
-        $callback = $this->aplicator->checkWord(
-            $this->irregularSingles,
-            $this->irregularPlurals,
-            $this->pluralRules
-        );
-
-        return $callback($text);
+        return !$this->isSingular($text);
     }
 
     /**
