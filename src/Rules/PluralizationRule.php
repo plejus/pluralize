@@ -16,7 +16,6 @@ class PluralizationRule
     {
         return [
             ['/s?$/i', 's'],
-            ['/[^\u0000-\u007F]$/i', '$0'],
             ['/([^aeiou]ese)$/i', '$1'],
             ['/(ax|test)is$/i', '$1es'],
             ['/(alias|[^aou]us|t[lm]as|gas|ris)$/i', '$1es'],
@@ -39,7 +38,7 @@ class PluralizationRule
             ['/(child)(?:ren)?$/i', '$1ren'],
             ['/eaux$/i', '$0'],
             ['/m[ae]n$/i', 'men'],
-            ['thou', 'you']
-      ];
+            ['/thou/i', 'you']
+        ];
     }
 }
